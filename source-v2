@@ -1,0 +1,206 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CaptainBookProject
+{
+    class ship
+    {
+        public string name, flag, master;
+        public int IMO_num, MMSI_num;
+        public ship() { }
+        public ship(string name, string flag, int IMO_num, int MMSI_num, string master)
+        {
+            this.name = name;
+            this.flag = flag;
+            this.IMO_num = IMO_num;
+            this.MMSI_num = MMSI_num;
+            this.master = master;
+        }
+        public void dysplay()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(16, 1);
+            Console.WriteLine("<<<<<<<<<<<<<<<Captain's Log Book>>>>>>>>>>>>>>>");
+            Console.SetCursorPosition(16, 2);
+            Console.WriteLine("<<<<<<<<<<<<<<<<Ship - {0}>>>>>>>>>>>>>>>>>>>>>>", name);
+            Console.SetCursorPosition(14, 3);
+            Console.WriteLine("Flag - {0} --- IMO - {1} --- MMSI - {2}", flag, IMO_num, MMSI_num);
+            Console.SetCursorPosition(16, 4);
+            Console.WriteLine("------------ Master - capt. {0} ----------------", master);
+        }
+    }
+    class dateTime : ship
+    {
+        public string logTime = DateTime.Now.ToString("HH:mm:ss", System.Globalization.DateTimeFormatInfo.InvariantInfo);
+        public dateTime() { }
+        public dateTime(string name, string flag, int IMO_num, int MMSI_num, string master, string logTime) :
+            base(name, flag, IMO_num, MMSI_num, master)
+        {
+            this.logTime = logTime;
+        }
+        public void dysplay()
+        {
+            Console.SetCursorPosition(1,6);
+            Console.WriteLine("{0}", logTime.PadRight(10));
+        }
+    }
+    class logistics : ship
+    {
+        int provisions, fuel, water, batteries;
+        public logistics() { }
+        public logistics(string name, string flag, int IMO_num, int MMSI_num, string master, int provisions,
+            int water, int fuel, int batteries) : base(name, flag, IMO_num, MMSI_num, master)
+        {
+            this.provisions = provisions;
+            this.water = water;
+            this.fuel = fuel;
+            this.batteries = batteries;
+        }
+        public void dysplay()
+        {
+            Console.SetCursorPosition(42, 6);
+            Console.WriteLine("prov.%-{0}", provisions.ToString().PadRight(17));
+            Console.SetCursorPosition(42, 7);
+            Console.WriteLine("wat.%-{0}", water.ToString().PadRight(17));
+            Console.SetCursorPosition(42, 8);
+            Console.WriteLine("fuel%-{0}", fuel.ToString().PadRight(17));
+            Console.SetCursorPosition(42, 9);
+            Console.WriteLine("batt.%-{0}", batteries.ToString().PadRight(17));
+        }
+    }
+
+    class engineering : ship
+    {
+        int engine_rpm, shaft_rpm, gen_power;
+        double engine_temp, draft_bow, draft_astern;
+        public engineering() { }
+        public engineering(string name, string flag, int IMO_num, int MMSI_num, string master, int engine_rpm,
+            int shaft_rpm, int gen_power, double engine_temp, double draft_bow, double draft_astern) :
+            base(name, flag, IMO_num, MMSI_num, master)
+        {
+            this.engine_rpm = engine_rpm;
+            this.shaft_rpm = shaft_rpm;
+            this.gen_power = gen_power;
+            this.engine_temp = engine_temp;
+            this.draft_bow = draft_bow;
+            this.draft_astern = draft_astern;
+        }
+        public void dysplay()
+        {
+            Console.SetCursorPosition(64, 6);
+            Console.WriteLine("en. rpm-{0}", engine_rpm.ToString().PadRight(12));
+            Console.SetCursorPosition(64, 7);
+            Console.WriteLine("shaft rpm-{0}", shaft_rpm.ToString().PadRight(12));
+            Console.SetCursorPosition(64, 8);
+            Console.WriteLine("gen. %-{0} ", gen_power.ToString().PadRight(12));
+            Console.SetCursorPosition(64, 9);
+            Console.WriteLine("en. degrC-{0}", engine_temp.ToString().PadRight(12));
+            Console.SetCursorPosition(64, 10);
+            Console.WriteLine("draft,m:bow-{0}", draft_bow.ToString().PadRight(12));
+            Console.SetCursorPosition(64, 11);
+            Console.WriteLine("---- astern-{0}", draft_astern.ToString().PadRight(12));
+        }
+    }
+    class position : ship
+    {
+        public string nav_means;
+        private string latitude, longitude;
+        protected string COG, SOG;
+        public position() { }
+        public position(string name, string flag, int IMO_num, int MMSI_num, string master,
+            string nav_means, string latitude, string longitude, string COG, string SOG) :
+            base(name, flag, IMO_num, MMSI_num, master)
+        {
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.COG = COG;
+            this.SOG = SOG;
+            this.nav_means = nav_means;
+
+        }
+        public void dysplay()
+        {
+            Console.SetCursorPosition(11, 6);
+            Console.WriteLine("lat={0}", latitude.PadRight(10));
+            Console.SetCursorPosition(11, 7);
+            Console.WriteLine("lon={0}", longitude.PadRight(10));
+            Console.SetCursorPosition(11, 8);
+            Console.WriteLine("COG-{0}", COG.PadRight(10));
+            Console.SetCursorPosition(11, 9);
+            Console.WriteLine("SOG-{0}", SOG.PadRight(10));
+            Console.SetCursorPosition(11, 10);
+            Console.WriteLine("Posit.-fix: {0}", nav_means.PadRight(10));
+        }
+    }
+    class action : dateTime
+    {
+        private string actLine;
+        public action() { }
+        public action(string name, string flag, int IMO_num, int MMSI_num, string master,
+            string logTime, string actLine) :
+            base(name, flag, IMO_num, MMSI_num, master, logTime)
+        {
+            this.actLine = actLine;
+        }
+        public void dysplay()
+        {
+            Console.SetCursorPosition(22,6);
+            Console.WriteLine(actLine.PadRight(20));
+        }
+
+    }
+    
+
+
+    class CaptainBook
+    {
+        static void Main()
+        {
+            int provisions, water, fuel, batteries;
+            string nav_means, latitude, longitude, COG, SOG, actLine;
+            Console.WriteLine("Enter remaining provisions, %:");
+            provisions = Int32.Parse(Console.ReadLine());
+            Console.WriteLine("Enter remaining water, %:");
+            water= Int32.Parse(Console.ReadLine());
+            Console.WriteLine("Enter remaining fuel, %:");
+            fuel = Int32.Parse(Console.ReadLine());
+            Console.WriteLine("Enter remaining batteries charge, %:");
+            batteries = Int32.Parse(Console.ReadLine());
+            Console.WriteLine("Enter nav_means used for last fix:");
+            nav_means = Console.ReadLine();
+            Console.WriteLine("Enter latitude:");
+            latitude= Console.ReadLine();
+            Console.WriteLine("Enter longitude:");
+            longitude= Console.ReadLine();
+            Console.WriteLine("Enter course over ground:");
+            COG= Console.ReadLine();
+            Console.WriteLine("Enter speed over ground:");
+            SOG= Console.ReadLine();
+            Console.WriteLine("Enter action executed:");
+            actLine= Console.ReadLine();
+            ship S1 = new ship("VARNA", "Malta", 4553234, 2073401231, "Dobrev");
+            S1.dysplay();
+            dateTime S1dt = new dateTime(S1.name, S1.flag, S1.IMO_num, S1.MMSI_num, S1.master,
+               DateTime.Now.ToString("HH:mm:ss", System.Globalization.DateTimeFormatInfo.InvariantInfo));
+            S1dt.dysplay();         
+            logistics S1logi = new logistics(S1.name, S1.flag, S1.IMO_num, S1.MMSI_num, S1.master,
+            provisions, water, fuel, batteries);
+            S1logi.dysplay();
+            engineering S1eng = new engineering(S1.name, S1.flag, S1.IMO_num, S1.MMSI_num, S1.master, 220, 100, 70,
+                82.5, 6.30, 8.10);
+            S1eng.dysplay();
+            position S1pos = new position(S1.name, S1.flag, S1.IMO_num, S1.MMSI_num, S1.master,
+                nav_means, latitude, longitude, COG, SOG);
+            S1pos.dysplay();
+            action S1Act = new action(S1dt.name, S1dt.flag, S1dt.IMO_num, S1dt.MMSI_num, S1dt.master, S1dt.logTime,
+               actLine);
+            S1Act.dysplay();
+
+           
+            Console.ReadKey();
+        }
+    }
+}
